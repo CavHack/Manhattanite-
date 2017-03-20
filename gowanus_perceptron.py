@@ -37,9 +37,8 @@ class State_Node(nodeObject):
         def __lt__(self, other): return False;
 
     def _binaryIndex_rank(collection, value):
-        ""
-        A Binary search which scrapes rank index to facilitate its traversal through space.
-        ""
+    ##    "A Binary search which scrapes rank index to facilitate its traversal through space.
+
         i = bisect_left(collection, value)
             if i != len(collection) and collection[i] == value:
                 return i
@@ -50,7 +49,16 @@ class State_Node(nodeObject):
         return (state != None and
          _binaryIndex_rank(haussdorf_set, state) == None)
 
-    def _doSearch(initState, desiredState, haussdorf_set_off, haussdorf_set_off_add)
+    def _doSearch(initState, desiredState, haussdorf_set_off, haussdorf_set_off_add):
 
         def haussdorf_set_off_add_if_not_visited(MSucc, travis):
             if _valid_State(MSucc, haussdorf_set):
+                haussdorf_set_off_add(State_Node(MSucc, currentNode, travis))
+
+       def reconstructTravis(node) :
+           actors = []       ##actor=actions
+           while node.travis != None:
+               actors.append(node.travis)
+               node = node.parent
+
+               return actors
