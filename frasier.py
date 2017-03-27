@@ -38,6 +38,7 @@ def load_file():
 
 def preprocess():
     data, target = load_file()
+    #http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
     count_vectorizer = CountVectorizer(binary='true')
     data = count_vectorizer.fit_transform(data)
     tfidf_data = TfidfTransformer(use_idf=false).fit_transform(data)
