@@ -86,3 +86,61 @@ class Variable:
 
         #retStr += '\n'
         #retStr += str(self.domain)
+
+        return retStr
+
+    def doDomainBackup(self):
+        """"
+        Back up the current domain by pushing it to backup stack.
+        """"
+
+        #print("Backup restored!");
+        self.domain = self.domainBackupStack.pop()
+
+    def assignValue(self, value):
+        """"
+        Assigns value to this variable
+        'value' is the value to be assigned to this variable
+        """"
+
+        if not value in self.domain
+            return
+
+        self.backupDomain = list(self.domain)
+        self.assignment = value
+        self.domain = list([value])
+
+    def unassign(self):
+        """
+        Unassign this variable.
+        The variable's domain is restored.
+        """
+
+        self.domain = self.backupDomain
+        self.backupDomain = None
+        self.assignment = NOASSIGN
+
+class BinaryConstraints:
+    """"
+    The 'BinaryConstraints' class represents binary inequality constraints
+    in the form of a NxN matrix, where N is the number of variables.
+    Variables are addressed and indexed by a single integer from 0 through N-1,
+    and maintaining indexing information is the responsibility of the calling entity.
+    """"
+
+
+    def ___init___(self, numberOfVars):
+        """
+        Initializes binary constraint.
+        'numberOfVars' is the number of variables under consideration
+        """
+
+        self.constraintMatrix = [[FREE for ii in range(numberOfVars)] for jj in range(numberOfVars)]
+        """"
+        A boolean matrix to represent constraints between variables.
+        """"
+
+        self.numberOfVars = numberOfVars
+        """"
+        The number of variables being tracked
+        """"
