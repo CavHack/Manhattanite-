@@ -144,3 +144,29 @@ class BinaryConstraints:
         """"
         The number of variables being tracked
         """"
+
+        # def __str__(self):
+	# 	"""
+	# 	Return a human-friendy string representation of the `BinaryConstraints` object.
+	# 	"""
+	#
+	# 	retStr = '   '
+	#
+	# 	for ii in range(self.numberOfVars):
+	# 		retStr += str(ii % SUDOKU_SIZE + 1) + ' '
+	#
+	# 	# retStr += "\n	  "
+	# 	# retStr += ("- " * self.numberOfVars)
+	#
+	# 	retStr += '\n'
+	#
+	# 	for ii in range(self.numberOfVars):
+	# 		retStr += str(ii % SUDOKU_SIZE + 1) + '| '
+	# 		for jj in range(self.numberOfVars):
+	# 			if self.constraintMatrix[ii][jj] == CONSTRAINED:
+	# 				retStr += 'X '
+	# 			else:
+	# 				retStr += '_ '
+	# 		retStr += '\n'
+	#
+	# 	return retStr
