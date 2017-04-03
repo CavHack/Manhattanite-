@@ -404,4 +404,169 @@ class Sudoku:
 						minDomainLength = len(var.domain)
 
 		return nextVar
+
+
+
+        def orderDomainValues(self, currVar, mode = DEFAULT):
+            """"
+            Returns an ordered list of values
+            """"
+
+            returnList = []
+            possibleValuesList = []
+
+            if mode < LCV:
+                returnList = list(currVar.domain)
+            else:
+                conflictingIndices = self.binaryConstraints.getConflictingVariablesFor(currVar.index)
+                for value in currVar.domain:
+                    possibleValues = 0
+                    for conflictingIndex in conflictingIndices:
+                        var self.indexToVariable[conflictingIndex]
+                        for ii in var.domain:
+                            if ii in var.domain:
+                                if ii != value:
+                                    possibleValues +=1
+
+                                insertIndex = len(possibleValuesList)
+                                for ii in range(len(possibleValuesList)):
+                                    if possibleValuesList[ii] <= possibleValues:
+                                        insertIndex = if __name__ == '__main__':
+                                            break
+
+                                            possibleValuesList.insert(insertIndex, possibleValues)
+                                            returnList.insert(insertIndex, value)
+
+                                            return returnList
+
+                                def isConsistentWithAssignment(self, varToAssign, currentAssigned):
+                                    """
+		This boolean function checks if consistency is preserved when `varToAssign` is assigned the
+		value `varToAssign`.
+		"""
+
+		conflicts = self.binaryConstraints.getConflictingVariablesFor(varToAssign.index)
+
+		for index in conflicts:
+			var = self.indexToVariable[index]
+			if var.assignment == valueToAssign:
+				return False
+
+		return True
+
+
+	def checkSolution(self):
+		"""
+		Test if a Soduko's solution is valid.
+		"""
+
+		# Check completeness
+
+		if not self.isComplete():
+			return False
+
+		# Check rows
+
+		for ii in range(self.size):
+			tempSet = set([])
+			for jj in range(self.size):
+				if self.board[ii][jj] in tempSet:
+					return False
+				tempSet.add(self.board[ii][jj])
+
+		# Check columns
+
+		for jj in range(self.size):
+			tempSet = set([])
+			for ii in range(self.size):
+				if self.board[ii][jj] in tempSet:
+					return False
+				tempSet.add(self.board[ii][jj])
+
+		# Check boxes
+
+		sqrtVal = int(math.sqrt(self.size))
+		for ii in range(sqrtVal):
+			for jj in range(sqrtVal):
+
+				tempSet = set([])
+				for mm in range(sqrtVal):
+					for nn in range(sqrtVal):
+						elem = self.board[ii * sqrtVal + mm][jj * sqrtVal + nn]
+						if elem in tempSet:
+							return False
+						tempSet.add(elem)
+
+		return True
+
+
+	def restoreVariableDomains(self):
+		"""
+		Restores the domain of each variable to latest backup.
+		"""
+		for ii in range(self.size):
+			for jj in range(self.size):
+				var = self.board[ii][jj]
+				var.restoreDomain()
+
+	def backupVariableDomains(self):
+		"""
+		Creates a backup of the current variable domain.
+		"""
+		for ii in range(self.size):
+			for jj in range(self.size):
+				var = self.board[ii][jj]
+				var.doDomainBackup()
+
+
+	def solveHelper(self, currentAssigned, method):
+		"""
+		Solves the Sudoku problem.
+		This functions returns `None` if failure occurs, else returns a complete and
+		consistent assignment.
+		"""
+
+		# print len(currentAssigned)
+		# self.prevProgress = 100 * len(currentAssigned) / self.initiallyFree
+		# self.prevProgress = max(100 * len(currentAssigned) / self.initiallyFree, self.prevProgress)
+		# print("Solved: " + str(min(self.prevProgress, 100)) + " %", end = "\r")
+
+		if self.isComplete():
+			return currentAssigned
+
+		else:
+			chosenVar = self.selectUnassignedVar(method)
+			orderedDomain = self.orderDomainValues(chosenVar, method)
+
+			# print chosenVar
+			# print orderedDomain
+
+			for value in orderedDomain:
+				if self.isConsistentWithAssignment(chosenVar, value, currentAssigned):
+					chosenVar.assignValue(value)
+					currentAssigned.add(chosenVar)
+
+					if method == MAC and not self.restoreArcConsistency(chosenVar):
+						currentAssigned.remove(chosenVar)
+						self.restoreVariableDomains()
+						chosenVar.unassign()
+						continue
+
+					if method == FWCHECK and not self.areDomainsOkay():
+						currentAssigned.remove(chosenVar)
+						chosenVar.unassign()
+						continue
+
+					result = self.solveHelper(currentAssigned, method)
+
+					if result != None:
+						return result
+
+					currentAssigned.remove(chosenVar)
+					if method == MAC:
+						self.restoreVariableDomains()
+					chosenVar.unassign()
+
+		self.numBacktracks += 1
+		return None
 		
