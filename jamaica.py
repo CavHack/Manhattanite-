@@ -170,3 +170,53 @@ class BinaryConstraints:
 	# 		retStr += '\n'
 	#
 	# 	return retStr
+
+
+def setConstraint(self, ii, jj):
+    """
+    Sets a constraint between variables.
+    'ii' is the index of first variables
+    'jj' is the index of second variable
+    """
+
+    self.constraintMatrix[ii][jj] = CONSTRAINED
+    self.constraintMatrix[jj][ii] = CONSTRAINED
+
+    # def isConstrained(self, ii, jj):
+	# 	"""
+	# 	Checks for a constraint between variables.
+	# 	`ii` is the index of first variable.
+	# 	`jj` is the index of second variable.
+	# 	This function returns True if there is a constraint between variables, and False otherwise.
+	# 	"""
+	#
+	# 	return self.constraintMatrix[ii][jj] == CONSTRAINED
+
+	def getConflictingVariablesFor(self, varIndex):
+		"""
+		This function returns a list of variables conflicting with the given variable.
+		The variables are zero-indexed.
+		`varIndex` is the index (zero-based) of the input variable.
+		"""
+
+		retList = []
+		for jj in range(self.numberOfVars):
+			if self.constraintMatrix[varIndex][jj] == CONSTRAINED:
+				retList.append(jj)
+		return retList
+
+
+class Sudoku:
+    """
+    Class to represent an instance of Sudoku board.
+    """
+
+    def __init__(self, initBoardMat):
+        """"
+        Constructor for Sudoku board.
+        Assumes input matrix to be square and consistent.
+        'initBoardMat' is a 2D-matrix of 'Variable' instances for initialization
+        of Sudoku board. It contains 0 for unassigned value
+        """"
+
+        self.size = len(initBoardMat)
