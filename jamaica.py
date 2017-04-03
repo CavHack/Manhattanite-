@@ -220,3 +220,188 @@ class Sudoku:
         """"
 
         self.size = len(initBoardMat)
+        """"
+        The size of Sudoku matrix
+        """"
+
+        self.board = []
+        """
+        The matrix containing variable objects.
+        """
+
+        self.numBacktracks = 0
+        """
+        Housekeeping variable.
+        """
+
+        self.initallyFree = 0
+        """"
+        Denotes the number of slots initially unassigned
+        """"
+
+        self.prevProgress = 0
+		"""
+		Housekeeping variable.
+		"""
+
+		self.binaryConstraints = BinaryConstraints(self.size * self.size)
+		"""
+		BinaryConstraint object to hold all the binary constraints for this Sudoku.
+		"""
+
+		self.indexToVariable = {}
+		"""
+		Dictionary to save Variables objects with their indices as keys.
+		Can be used to obtain a Variable object by its index.
+		"""
+
+
+        index = 0
+        for ii in range(self.size):
+            self.board.append([])
+            for jj in range(self.size):
+                #print str(ii) + "" +str(jj)
+                thisVariable = Variable(range(1, self.size+1), index)
+                if initBoardMat[ii][jj] != FREE:
+                    thisVariable.assignValue(initBoardMat[ii][jj])
+
+                else:
+                    self.initiallyFree += 1
+                    self.board[ii].append(thisVariable)
+                    self.indexToVariable[index] = thisVariable
+                    index +=1
+
+                self.setConstraints()
+                for ii in range(self.size)
+                for jj in range(self.size):
+                    var = self.board[ii][jj]
+                    if not self.restoreArcConsistency(var):
+                        print("Can not be solved!")
+
+                def __str__(self):
+                """
+                Return a human-friendly string representation of the Sudoku object
+                """
+
+	# This is human-friendly
+		# Comment before finalizing
+
+		# retStr = '   '
+#
+# 		for ii in range(self.size):
+# 			retStr += str(ii % SUDOKU_SIZE + 1) + ' '
+#
+# 		# retStr += "\n	  "
+# 		# retStr += ("- " * self.size)
+#
+# 		retStr += '\n'
+#
+# 		for ii in range(self.size):
+# 			retStr += str(ii % SUDOKU_SIZE + 1) + '| '
+# 			for jj in range(self.size):
+# 				if self.board[ii][jj].assignment == NOASSIGN:
+# 					retStr += '_ '
+# 				else:
+# 					retStr += str(self.board[ii][jj].assignment) + ' '
+# 			retStr += '\n'
+#
+# 		return retStr
+
+		# This is assignment-friendly
+		# Uncomment before finalizing
+
+
+        retStr = ""
+        for ii in range(self.size):
+            for jj in range(self.size):
+                retStr += str(self.board[ii][jj])
+
+            retStr += "\n"
+            return retStr
+
+        def setConstraints(self):
+            """"
+            Initializes all the constraints for this sudoku.
+            """"
+            subSquareSize = int(pow(self.size, 0.5))
+
+            		for ii in range(self.size):
+			for jj in range(self.size):
+
+				# Iterate over all the variables.
+
+				for kk in range(jj + 1, self.size):
+
+					# Add constraints with all remaining variables in current row.
+
+					self.binaryConstraints.setConstraint(self.board[ii][jj].index,
+							self.board[ii][kk].index)
+				for kk in range(ii + 1, self.size):
+
+					# Add constraints with all remaining variables in current column.
+
+					self.binaryConstraints.setConstraint(self.board[ii][jj].index,
+							self.board[kk][jj].index)
+
+				subSquareEndRow = int(ii / subSquareSize + 1) \
+					* subSquareSize - 1
+				subSquareEndColumn = int(jj / subSquareSize + 1) \
+					* subSquareSize - 1
+
+				# End row and End column of current subsquare
+
+				subSquareStartColumn = subSquareEndColumn \
+					- subSquareSize + 1
+
+				for ik in range(ii + 1, subSquareEndRow + 1):
+					for jk in range(subSquareStartColumn,
+									subSquareEndColumn + 1):
+
+						# Add constraints with all remaining variables in current subsquare
+
+						self.binaryConstraints.setConstraint(self.board[ii][jj].index,
+								self.board[ik][jk].index)
+
+	def isComplete(self):
+		"""
+		Checks if the assignment of variables is complete.
+		"""
+
+		index = 0
+		for ii in range(self.size):
+			for jj in range(self.size):
+				var = self.indexToVariable[index]
+
+				if var.assignment == NOASSIGN:
+					return False
+
+				index += 1
+
+		return True
+
+
+	def selectUnassignedVar(self, mode = DEFAULT):
+		"""
+		Returns an unassigned variable according to a specified strategy.
+		`mode` specifies the strategy to be used.
+		"""
+
+		nextVar = None
+		if(mode < MRV):
+			for ii in range(self.size):
+				for jj in range(self.size):
+					var = self.board[ii][jj]
+
+					if var.assignment == NOASSIGN:
+						return var
+		else:
+			minDomainLength = self.size+1
+			for ii in range(self.size):
+				for jj in range(self.size):
+					var = self.board[ii][jj]
+					if var.assignment == NOASSIGN and len(var.domain) < minDomainLength:
+						nextVar = var
+						minDomainLength = len(var.domain)
+
+		return nextVar
+		
