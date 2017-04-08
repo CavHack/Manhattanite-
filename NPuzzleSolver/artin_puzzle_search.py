@@ -76,3 +76,19 @@ class State:
         """
         #query all the moves.
         for i in xrange(moves):
+            actions = self.getActions()
+            self.move(random.choice(actions))
+
+            def expand(self):
+                """
+                Output the state-list which is inherently concurrent
+                Apply, check state, and proceeed to the successor.
+                """
+                actions = self.getActions()
+                successors = []
+                i, j = self.zero
+                for action in actions:
+                    #init board
+                    board = [list(b) for b in self.board]
+                    if action == 'Up':
+                        board[i][j] = self.board[i-1][j]
