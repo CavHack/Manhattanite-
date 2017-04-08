@@ -90,5 +90,26 @@ class State:
                 for action in actions:
                     #init board
                     board = [list(b) for b in self.board]
+
                     if action == 'Up':
                         board[i][j] = self.board[i-1][j]
+                        board[i-1][j] = 0
+                        successors.append(State(board, ( i - 1 , j), self.cost + 1, self, action))
+                        elif action == 'Down':
+                        board[i][j] = self.board[i+1][j]
+                        board[i + 1][j] = 0
+                        successors.append(State(board, (i + 1, j ), self.cost + 1, self, action))
+
+                        elif action == 'Left':
+                        board[i][j] = self.board[i][j - 1]
+                        board[i][j - 1] = 0
+                        successors.append(State(board, (i, j-1), self.cost + 1, self, action))
+
+                        elif action == 'Right':
+                        board[i][j] = self.board[i][j + 1]
+                        board[i][j+1] = 0
+                        successors.append(State(board, (i, j+1), self.cost + 1, self, action))
+
+                return successors
+
+            def __eq__(self, other)
