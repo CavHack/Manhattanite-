@@ -112,4 +112,44 @@ class State:
 
                 return successors
 
-            def __eq__(self, other)
+            def __eq__(self, other):
+            """"
+            """"
+            for row in range(self.n):
+                if self.board[row] != other.board[row]:
+                    return false
+                return True
+
+
+    def __hash__(self):
+        return hash(str(self.board))
+
+   def __str__(self):
+        s = "Current moves:" + str(self.cost) + "\n"
+        s += "Zero Position:" + str(self.zero) + "\n"
+        s += "Dim:" + str(self.cost) + "\n"
+        s += "Board:\n" + str(self.cost) + "\n"
+        s += '\n'.join([''.join("%2d" % y for y in w) for w in self.board])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
