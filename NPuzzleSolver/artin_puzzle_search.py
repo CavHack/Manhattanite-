@@ -169,14 +169,51 @@ def __init__(self, puzzle):
 
 #FIXME: Improve the implementation on arbitrary length board
     n = int(sqrt(len(board)))
-board = [board[i:i+n] for i in range(0, len(board), n)]
-zero = next((i, array.index(0))
-            
-            
-            )
+    board = [board[i:i+n] for i in range(0, len(board), n)]
+    zero = next(((i, array.index(0))
+            for i, array in enumerate(board)
+            if 0 in array),
+            None)
 
 
+    state = State(board, zero, 0)
+    problem = NPuzzle(state)
+    solver = Solver()
 
+# TODO: Add cases that uses A-start and the rest of algorithms that are going to be implemented
+    if method == 'bfs':
+        solver.breadthFirstSearch(problem)
+    elif method == 'dfs':
+        solver.depthFirstSearch(problem)
+    elif method == 'ucs':
+        solver.uniformCostSearch(problem)
+    elif method == 'ast':
+        solver.aStarSearch(problem, manhattanDistance)
+    elif method == 'ida':
+        solver.iterativeDeepeningAstar(problem, manhattanDistance)
+    else:
+        solver.iterativeDeepening(problem)
+
+    # Writing to output file
+    with open("output.txt", "w") as text_file:
+        text_file.write("path_to_goal: ")
+        text_file.write(str(solver.path) + "\n")
+        text_file.write("cost_of_path: ")
+        text_file.write(str(solver.cost_of_path) + "\n")
+        text_file.write("nodes_expanded: ")
+        text_file.write(str(solver.nodes_expanded) + "\n")
+        text_file.write("fringe_size: ")
+        text_file.write(str(solver.fringe_size) + "\n")
+        text_file.write("max_fringe_size: ")
+        text_file.write(str(solver.max_fringe_size) + "\n")
+        text_file.write("search_depth: ")
+        text_file.write(str(solver.search_depth) + "\n")
+        text_file.write("max_search_depth: ")
+        text_file.write(str(solver.max_search_depth) + "\n")
+        text_file.write("running_time: ")
+        text_file.write(("%.8f") % solver.running_time + "\n")
+        text_file.write("max_ram_usage: ")
+        text_file.write(("%.8f") % solver.max_ram_usage + "\n")
 
 
 
