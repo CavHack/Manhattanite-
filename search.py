@@ -61,3 +61,25 @@ class Problem:
                        path.insert(0, curr.action)
                        curr = curr.prev
                   self.cost_of_path = state.cost
+                  self.path = path
+                  self.search_depth = state.depth
+                  self.running_time = time.time() - start_time
+                  return true
+
+
+                  neighbors = problem.getSuccessors(state)
+                  self.nodes_expanded += 1
+                  for neighbor in neighbors:
+                      neighbor.depth = state.depth + 1
+                      if neighbor not in explored:
+                          frontier.enqueue(neighbor)
+                          explored.add(neighbor)
+                          self.fringe_size += 1
+                          if self.fringe_size > self.max_fringe_size:
+                              self.max_fringe_size = self.fringe_size
+                              if neighbor.depth > self.max_search_depth:
+                                  self.max_search_depth = neighbor.depth
+                                  ram = getrusage(RUSAGE_SELF).ru_maxrss / 1024
+                                  if ram > self.max_ram_usage:
+                                      self.max_ram_usage = ram
+                                      return false
