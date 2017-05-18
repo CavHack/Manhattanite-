@@ -73,3 +73,18 @@ for i in xrange(N):
         
         for k in xrange(1, K+1):
             Xk = X[cNew ==k, :]
+            mu[k - 1] = np.sum(Xk, axis=0) / Xk.shape[0]
+            it += 1
+
+        return (c, mu, it)
+
+def gauss(mu, cov, x):
+    """
+    Computes gaussian parametrized by mu and cov, given x. Make sure
+    x dimensions are of correct size
+    """
+    d = len(x)
+    den = np.sqrt(np.linalg.det(cov))*(2*np.pi)**(0.5*d)
+    num = np.exp(-0.5 * np.dot(x-mu, np.linalg.solve(cov, np.transpose(x-mu))))
+    return num/den
+
