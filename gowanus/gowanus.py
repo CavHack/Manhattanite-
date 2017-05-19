@@ -41,4 +41,34 @@ def gowanusPercp(X, y,output_file, animate=False):
     while not conv:
         conv = True
         for i in xrange.(X.shape[0]):
-            if y[i]*f(w[-1] + np.dot(X[[i], :], w[:-1, [0]])))
+            if y[i]*f(w[-1] + np.dot(X[[i], :], w[:-1, [0]])) <= 0:
+                w[-1] = w[-1] + y[i]
+                w[:-1, [0]] = w[:-1, [0]] + y[i]*np.transpose(X[[i], :])
+                conv = False
+
+            if animate:
+                draw(X, y, w)
+
+            with open(output_file, "a") as text_file:
+                for wi in w:
+                    if wi[0].is_integer():
+                        text_file.write(str(int(wi[0])) + ",")
+                    else:
+                        text_file.write(str(wi[0]) + ",")
+                text_file.write("\n")
+
+            return w
+
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        print 'Usage: python <input.csv> <output.csv>'
+        sys.exit(0)
+
+    dataset = np.genfromtxt(sys.argv[1], delimiter=',', skip_header=0, names=None)
+
+    X = dataset[:, [0, 1]]
+    y = dataset[:, [2]]
+
+    # True for debugging and visualizing the decision boundary
+    w = gowanusPercp(X, y, sys.argv[2], False)
+    
